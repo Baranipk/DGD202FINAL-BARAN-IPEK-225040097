@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,6 +6,8 @@ public class PlayerMover : MonoBehaviour
 {
     private Rigidbody _rigidbody;
     
+    [Header("References")]
+    [SerializeField] PlayerInputHandler PlayerInput;
     [Header("Movement Parameters")]
     [field: SerializeField] public float MoveSpeed { get; private set; }
     [SerializeField] private float _turnSpeed;
@@ -22,5 +25,10 @@ public class PlayerMover : MonoBehaviour
         transform.Rotate(Vector3.up, moveX * _turnSpeed * Time.deltaTime, Space.World);
         
         _rigidbody.linearVelocity = transform.forward * (moveZ * MoveSpeed);
+    }
+
+    public void FixedUpdate()
+    {
+        Move(PlayerInput.GetMoveInput().normalized);
     }
 }
